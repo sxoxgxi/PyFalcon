@@ -17,7 +17,11 @@ To deploy this project run:
  $ pip install -r requirements.txt
  $ waitress-serve --port=8000 image_sharing.app:app
 ```
+
+Open http://127.0.0.1:8000/images
+
 ## Checking routes
+
 To chect the available routes for the app run:
 
 ```bash
@@ -31,4 +35,27 @@ It should look like this:
     ⇒ /images - Resource:
        └── GET - on_get
 ```
-### Open http://127.0.0.1:8000/images
+
+## Testing the application
+
+Let’s start by installing the pytest package if not installed:
+
+```bash
+ $ pip install pytest
+```
+
+Next, run the following from the main directory:
+
+```bash
+ $ pytest tests
+```
+
+It should look like this:
+
+```bash
+ ====== test session starts ======
+
+            some messages
+
+ ====== 1 passed in some seconds ======
+```

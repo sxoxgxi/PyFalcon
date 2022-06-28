@@ -8,7 +8,7 @@ class Resource:
         doc = {
             'images': [
                 {
-                    'href': 'https://pbs.twimg.com/profile_images/1527968318153338880/8PX5U9u3_400x400.jpg'
+                    'href': '/images/kaguyachaa.png'
                 }
             ]
         }
