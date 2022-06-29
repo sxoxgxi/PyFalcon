@@ -57,5 +57,17 @@ It should look like this:
 
             some messages
 
- ====== 1 passed in some seconds ======
+ ====== number of tests passed in some seconds ======
 ```
+
+## POST request
+
+Now les try sending a POST request to the server by using httpie:
+
+```bash
+ $ http POST localhost:8000/images Content-Type:image/png < images/kaguyachaa.png
+```
+
+**Note: (images/kaguyachaa.png) can be any image of your choice**
+
+After sending the POST request to the server you should have an copy of the original image in your storage path
