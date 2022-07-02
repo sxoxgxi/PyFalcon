@@ -70,4 +70,4 @@ Now les try sending a POST request to the server by using httpie:
 
 **Note: (images/kaguyachaa.png) can be any image of your choice**
 
-After sending the POST request to the server you should have an copy of the original image in your storage path
+After sending the POST request to the server you should have a copy of the original image in your storage path
