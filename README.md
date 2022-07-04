@@ -30,8 +30,9 @@ app = get_app()
 $ waitress-serve --port=8000 image_sharing.app:app  ✅
 ```
 
-Note: You shouldn't pass wsgi the create_app function, instead should make the function return app and give the wsgi returned app
-Open http://127.0.0.1:8000/images
+Note: You shouldn't pass wsgi the create_app function, instead should make the function return app and give the wsgi returned app.
+
+* Open http://127.0.0.1:8000/images
 
 ## Checking routes
 
