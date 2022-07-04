@@ -1,15 +1,25 @@
-from email import header
-from wsgiref import headers
+import io
+from wsgiref.validate import InputWrapper
+
+from unittest.mock import call, MagicMock, mock_open
+
 import falcon
 from falcon import testing
 import msgpack
 import pytest
-from unittest.mock import mock_open, call
-from image_sharing.app import app
+
+import image_sharing.app
+import image_sharing.images
 
 
 @pytest.fixture
-def client():
+def mock_store():
+    return MagicMock()
+
+
+@pytest.fixture
+def client(mock_store):
+    app = image_sharing.app.create_app(mock_store)
     return testing.TestClient(app)
 
 
@@ -21,26 +31,27 @@ def test_list_images(client):
             }
         ]
     }
+
     response = client.simulate_get('/images')
     result_doc = msgpack.unpackb(response.content, raw=False)
+
     assert result_doc == doc
     assert response.status == falcon.HTTP_OK
 
 
-def test_posted_image_gets_saved(client, monkeypatch):
-    mock_file_open = mock_open()
-    monkeypatch.setattr('io.open', mock_file_open)
+def test_post_image(client, mock_store):
+    file_name = 'fake-image-name.xyz'
+    mock_store.save.return_value = file_name
+    image_content_type = 'image/xyz'
 
-    fake_uuid = '123e4567-e89b-12d3-a456-426655440000'
-    monkeypatch.setattr('uuid.uuid4', lambda: fake_uuid)
-
-    fake_image_bytes = b'fake-image-bytes'
     response = client.simulate_post(
         '/images',
-        body=fake_image_bytes,
-        headers={'Content-Type': 'image/png'}
+        body=b'some-fake-bytes',
+        headers={'content-type': image_content_type}
     )
 
-    assert response.status_code == falcon.HTTP_CREATED
-    assert call().write(fake_image_bytes) in mock_file_open.mock_calls
-    assert response.headers['location'] == f'image/{fake_uuid}.png'
+    assert response.status == falcon.HTTP_CREATED
+    assert response.headers['location'] == f'/images/{file_name}'
+    saver_call = mock_store.save.call_args
+    assert isinstance(saver_call[0][0], InputWrapper)
+    assert saver_call[0][1] == image_content_type

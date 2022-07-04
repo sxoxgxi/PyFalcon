@@ -1,4 +1,6 @@
-# Falcon webframework
+# Falcon Web Framework
+
+- https://falcon.readthedocs.io/en/stable/
 
 # Installation
 
@@ -15,9 +17,20 @@ To deploy this project run:
 
 ```bash
  $ pip install -r requirements.txt
- $ waitress-serve --port=8000 image_sharing.app:app
+ $ waitress-serve --port=8000 image_sharing.app:get_app  ❌
 ```
 
+#### In app.py
+
+```py
+app = get_app()
+```
+
+```bash
+$ waitress-serve --port=8000 image_sharing.app:app  ✅
+```
+
+Note: You shouldn't pass wsgi the create_app function, instead should make the function return app and give the wsgi returned app
 Open http://127.0.0.1:8000/images
 
 ## Checking routes
